@@ -32,7 +32,7 @@ def escalar_a_rango_01(lista_de_listas):
 
 def crear_mapa_calor(tablero):
     fig, ax = plt.subplots()
-    im = ax.imshow(tablero, cmap='viridis', interpolation='nearest')
+    im = ax.imshow(tablero, cmap='coolwarm', interpolation='nearest')
 
     # Personalizar el gráfico
     ax.set_xticks(np.arange(tablero.shape[1]))
@@ -41,10 +41,10 @@ def crear_mapa_calor(tablero):
     ax.set_yticklabels(range(1, tablero.shape[0] + 1))
 
     # Añadir etiquetas para cada casilla
-    for i in range(tablero.shape[0]):
+    """for i in range(tablero.shape[0]):
         for j in range(tablero.shape[1]):
             text = ax.text(j, i, round(tablero[i, j], 2),
-                           ha="center", va="center", color="w", fontsize=8)
+                           ha="center", va="center", color="w", fontsize=8)"""
 
     # Mostrar el gráfico
     plt.show()
@@ -53,7 +53,7 @@ def crear_mapa_calor(tablero):
 def main(inicial, n):
     tablero = Tablero(8, 8)
     camino = Camino(tablero, inicial, n)
-    camino.simular_camino()
+    camino.simular_camino_alfil()
     tablero_a_pintar = crear_tablero_a_pintar(tablero)
     array_escalado = escalar_a_rango_01(tablero_a_pintar)
     crear_mapa_calor(array_escalado)
@@ -61,4 +61,4 @@ def main(inicial, n):
 
 if __name__ == '__main__':
 
-    main((0, 0), 1000000)
+    main((0, 0), 5000000)

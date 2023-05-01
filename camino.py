@@ -58,7 +58,7 @@ class nodo:
         self.veces_pisado = 0
 
     # Saltos de un caballo
-    def saltos_caballo(self):
+    def movimientos_caballo(self):
         saltos = []
         x = self.x
         y = self.y
@@ -90,24 +90,158 @@ class nodo:
         return saltos
 
     # Saltos alfil
-    def saltos_alfil(self):
-        pass
+    def movimientos_alfil(self):
+        movimientos = []
+        x = self.x
+        y = self.y
+
+        # Movimientos en diagonal hacia arriba-izquierda
+        i, j = x - 1, y - 1
+        while i >= 0 and j >= 0:
+            movimientos.append((i, j))
+            i -= 1
+            j -= 1
+
+        # Movimientos en diagonal hacia abajo-izquierda
+        i, j = x - 1, y + 1
+        while i >= 0 and j < self.tamañoy:
+            movimientos.append((i, j))
+            i -= 1
+            j += 1
+
+        # Movimientos en diagonal hacia arriba-derecha
+        i, j = x + 1, y - 1
+        while i < self.tamañox and j >= 0:
+            movimientos.append((i, j))
+            i += 1
+            j -= 1
+
+        # Movimientos en diagonal hacia abajo-derecha
+        i, j = x + 1, y + 1
+        while i < self.tamañox and j < self.tamañoy:
+            movimientos.append((i, j))
+            i += 1
+            j += 1
+
+        return movimientos
 
     # Saltos torre
-    def saltos_torre(self):
-        pass
+    def movimientos_torre(self):
+        movimientos = []
+        x = self.x
+        y = self.y
+
+        # Movimientos horizontales
+        for i in range(self.tamañox):
+            if i != x:
+                movimientos.append((i, y))
+
+        # Movimientos verticales
+        for j in range(self.tamañoy):
+            if j != y:
+                movimientos.append((x, j))
+
+        return movimientos
 
     # Saltos reina
-    def saltos_reina(self):
-        pass
+    def movimientos_reina(self):
+        movimientos = []
+        x = self.x
+        y = self.y
 
-    def saltar_caballo(self):
-        saltos_posibles = self.saltos_caballo()
+        # Movimientos horizontales
+        for i in range(self.tamañox):
+            if i != x:
+                movimientos.append((i, y))
+
+        # Movimientos verticales
+        for j in range(self.tamañoy):
+            if j != y:
+                movimientos.append((x, j))
+
+        # Movimientos en diagonal hacia arriba-izquierda
+        i, j = x - 1, y - 1
+        while i >= 0 and j >= 0:
+            movimientos.append((i, j))
+            i -= 1
+            j -= 1
+
+        # Movimientos en diagonal hacia abajo-izquierda
+        i, j = x - 1, y + 1
+        while i >= 0 and j < self.tamañoy:
+            movimientos.append((i, j))
+            i -= 1
+            j += 1
+
+        # Movimientos en diagonal hacia arriba-derecha
+        i, j = x + 1, y - 1
+        while i < self.tamañox and j >= 0:
+            movimientos.append((i, j))
+            i += 1
+            j -= 1
+
+        # Movimientos en diagonal hacia abajo-derecha
+        i, j = x + 1, y + 1
+        while i < self.tamañox and j < self.tamañoy:
+            movimientos.append((i, j))
+            i += 1
+            j += 1
+
+        return movimientos
+
+    def movimientos_rey(self):
+        movimientos = []
+        x = self.x
+        y = self.y
+
+        # Las direcciones posibles del rey: arriba, abajo, izquierda, derecha y diagonales
+        direcciones = [
+            (-1, -1), (-1, 0), (-1, 1),
+            (0, -1),           (0, 1),
+            (1, -1),  (1, 0),  (1, 1),
+        ]
+
+        for dx, dy in direcciones:
+            i, j = x + dx, y + dy
+            if 0 <= i < self.tamañox and 0 <= j < self.tamañoy:
+                movimientos.append((i, j))
+
+        return movimientos
+
+    def mover_caballo(self):
+        saltos_posibles = self.movimientos_caballo()
         cantidad_saltos = len(saltos_posibles)
         n_aleatorio = random.randint(1, cantidad_saltos)
         salto_escogido = saltos_posibles[n_aleatorio - 1]
         return salto_escogido
 
+    def mover_alfil(self):
+        saltos_posibles = self.movimientos_alfil()
+        cantidad_saltos = len(saltos_posibles)
+        n_aleatorio = random.randint(1, cantidad_saltos)
+        salto_escogido = saltos_posibles[n_aleatorio - 1]
+        return salto_escogido
+
+    def mover_torre(self):
+        saltos_posibles = self.movimientos_torre()
+        cantidad_saltos = len(saltos_posibles)
+        n_aleatorio = random.randint(1, cantidad_saltos)
+        salto_escogido = saltos_posibles[n_aleatorio - 1]
+        return salto_escogido
+
+    def mover_reina(self):
+        saltos_posibles = self.movimientos_reina()
+        cantidad_saltos = len(saltos_posibles)
+        n_aleatorio = random.randint(1, cantidad_saltos)
+        salto_escogido = saltos_posibles[n_aleatorio - 1]
+        return salto_escogido
+
+    def mover_rey(self):
+        saltos_posibles = self.movimientos_rey()
+        cantidad_saltos = len(saltos_posibles)
+        n_aleatorio = random.randint(1, cantidad_saltos)
+        salto_escogido = saltos_posibles[n_aleatorio - 1]
+        return salto_escogido
 # Clase camino
 
 
@@ -118,14 +252,70 @@ class Camino:
         self.T = cantidad_saltos
         self.casilla_inicial = casilla_inicial
 
-    def simular_camino(self):
+    def simular_camino_caballo(self):
         x0 = self.casilla_inicial[0]
         y0 = self.casilla_inicial[1]
         nodo_actual = self.tablero.tablero[y0][x0]
 
         for i in range(self.T):
             nodo_actual.veces_pisado = nodo_actual.veces_pisado + 1
-            salto = nodo_actual.saltar_caballo()
+            salto = nodo_actual.mover_caballo()
+            x = salto[0]
+            y = salto[1]
+            nodo_actual = self.tablero.tablero[y][x]
+
+        return nodo_actual
+
+    def simular_camino_alfil(self):
+        x0 = self.casilla_inicial[0]
+        y0 = self.casilla_inicial[1]
+        nodo_actual = self.tablero.tablero[y0][x0]
+
+        for i in range(self.T):
+            nodo_actual.veces_pisado = nodo_actual.veces_pisado + 1
+            salto = nodo_actual.mover_alfil()
+            x = salto[0]
+            y = salto[1]
+            nodo_actual = self.tablero.tablero[y][x]
+
+        return nodo_actual
+
+    def simular_camino_torre(self):
+        x0 = self.casilla_inicial[0]
+        y0 = self.casilla_inicial[1]
+        nodo_actual = self.tablero.tablero[y0][x0]
+
+        for i in range(self.T):
+            nodo_actual.veces_pisado = nodo_actual.veces_pisado + 1
+            salto = nodo_actual.mover_torre()
+            x = salto[0]
+            y = salto[1]
+            nodo_actual = self.tablero.tablero[y][x]
+
+        return nodo_actual
+
+    def simular_camino_reina(self):
+        x0 = self.casilla_inicial[0]
+        y0 = self.casilla_inicial[1]
+        nodo_actual = self.tablero.tablero[y0][x0]
+
+        for i in range(self.T):
+            nodo_actual.veces_pisado = nodo_actual.veces_pisado + 1
+            salto = nodo_actual.mover_reina()
+            x = salto[0]
+            y = salto[1]
+            nodo_actual = self.tablero.tablero[y][x]
+
+        return nodo_actual
+
+    def simular_camino_rey(self):
+        x0 = self.casilla_inicial[0]
+        y0 = self.casilla_inicial[1]
+        nodo_actual = self.tablero.tablero[y0][x0]
+
+        for i in range(self.T):
+            nodo_actual.veces_pisado = nodo_actual.veces_pisado + 1
+            salto = nodo_actual.mover_rey()
             x = salto[0]
             y = salto[1]
             nodo_actual = self.tablero.tablero[y][x]
@@ -133,23 +323,73 @@ class Camino:
         return nodo_actual
 
 
-def probabilidad_camino(cantidad_caminos, casilla_inicial, casilla_final, cantidad_turnos):
+def probabilidad_camino(cantidad_caminos, casilla_inicial, casilla_final, cantidad_turnos, pieza):
     tablero = Tablero(8, 8)
     camino = Camino(tablero, casilla_inicial, cantidad_turnos)
 
     favorables = 0
-    for i in range(cantidad_caminos):
-        final = camino.simular_camino()
-        xf = final.x
-        yf = final.y
 
-        if (xf, yf) == casilla_final:
-            favorables += 1
+    if pieza.rstrip() == "caballo":
+        for i in range(cantidad_caminos):
+            final = camino.simular_camino_caballo()
+            xf = final.x
+            yf = final.y
 
-    return favorables / cantidad_caminos
+            if (xf, yf) == casilla_final:
+                favorables += 1
+
+        return favorables / cantidad_caminos
+
+    elif pieza.rstrip() == "alfil":
+        for i in range(cantidad_caminos):
+            final = camino.simular_camino_alfil()
+            xf = final.x
+            yf = final.y
+
+            if (xf, yf) == casilla_final:
+                favorables += 1
+
+        return favorables / cantidad_caminos
+
+    elif pieza.rstrip() == "torre":
+        for i in range(cantidad_caminos):
+            final = camino.simular_camino_torre()
+            xf = final.x
+            yf = final.y
+
+            if (xf, yf) == casilla_final:
+                favorables += 1
+
+        return favorables / cantidad_caminos
+
+    elif pieza.rstrip() == "reina":
+        for i in range(cantidad_caminos):
+            final = camino.simular_camino_reina()
+            xf = final.x
+            yf = final.y
+
+            if (xf, yf) == casilla_final:
+                favorables += 1
+
+        return favorables / cantidad_caminos
+
+    elif pieza.rstrip() == "rey":
+        for i in range(cantidad_caminos):
+            final = camino.simular_camino_rey()
+            xf = final.x
+            yf = final.y
+
+            if (xf, yf) == casilla_final:
+                favorables += 1
+
+        return favorables / cantidad_caminos
+
+    else:
+        print("La pieza escrita no existe u ocurrió un error desconocido.")
+        print("el formato de probabilidad_camino es: (n, inicial, final, pasos, pieza)")
 
 
 if __name__ == '__main__':
-    p = probabilidad_camino(100000, (0, 0), (7, 7), 10)
+    p = probabilidad_camino(10000, (0, 0), (7, 7), 10, "rey")
 
     print(f"La probabilidad es : {p}")
