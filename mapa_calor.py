@@ -61,4 +61,4 @@ def main(inicial, n):
 
 if __name__ == '__main__':
 
-    main((0, 0), 5000000)
+    main((0, 0), 1000000)
