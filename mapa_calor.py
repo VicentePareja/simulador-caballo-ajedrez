@@ -1,5 +1,8 @@
 # mapa_calor.py
 from camino import Tablero, Camino, nodo
+from matrizP import (knight_transition_matrix, rook_transition_matrix,
+                     bishop_transition_matrix, queen_transition_matrix, king_transition_matrix,
+                     matrix_power_n)
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -50,6 +53,16 @@ def crear_mapa_calor(tablero):
     plt.show()
 
 
+def plot_transition_heatmap(matrix, n, m, row_number):
+    row = matrix[row_number]
+    row_reshaped = row.reshape((n, m))
+
+    plt.imshow(row_reshaped, cmap='coolwarm', interpolation='nearest')
+    plt.colorbar(label='Probabilidad de transición')
+    plt.title(f'Heatmap de la fila {row_number} de la matriz de transición')
+    plt.show()
+
+
 def main(inicial, n):
     tablero = Tablero(8, 8)
     camino = Camino(tablero, inicial, n)
@@ -59,6 +72,19 @@ def main(inicial, n):
     crear_mapa_calor(array_escalado)
 
 
+def main2(inicial, size, repeticiones):
+    n, m = size
+    t = repeticiones
+    Pmatrix = rook_transition_matrix(n, m)
+    Pmatrix_n = matrix_power_n(Pmatrix, t)
+    row_number = inicial
+    plot_transition_heatmap(Pmatrix_n, n, m, row_number)
+
+
 if __name__ == '__main__':
 
+    # Ver mapa de calor de simulación de camino. editar main para ver otras piezas.
     main((0, 0), 1000000)
+
+    # Ver mapa de calor teórico. editar main2 para ver otras piezas.
+    # main2(0, (8, 8), 100000)
