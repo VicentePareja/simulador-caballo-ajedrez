@@ -53,20 +53,20 @@ def crear_mapa_calor(tablero):
     plt.show()
 
 
-def plot_transition_heatmap(matrix, n, m, row_number):
+def plot_transition_heatmap(matrix, n, m, row_number=0):
     row = matrix[row_number]
     row_reshaped = row.reshape((n, m))
 
     plt.imshow(row_reshaped, cmap='coolwarm', interpolation='nearest')
     plt.colorbar(label='Probabilidad de transición')
-    plt.title(f'Heatmap de la fila {row_number} de la matriz de transición')
+    plt.title(f'Heatmap del promedio de la fila 0 y 1 de la matriz de transición')
     plt.show()
 
 
 def main(inicial, n):
     tablero = Tablero(8, 8)
     camino = Camino(tablero, inicial, n)
-    camino.simular_camino_alfil()
+    camino.simular_camino_caballo()
     tablero_a_pintar = crear_tablero_a_pintar(tablero)
     array_escalado = escalar_a_rango_01(tablero_a_pintar)
     crear_mapa_calor(array_escalado)
@@ -75,9 +75,11 @@ def main(inicial, n):
 def main2(inicial, size, repeticiones):
     n, m = size
     t = repeticiones
-    Pmatrix = rook_transition_matrix(n, m)
+    Pmatrix = knight_transition_matrix(n, m)
     Pmatrix_n = matrix_power_n(Pmatrix, t)
+    Pmatrix_n[0] = (Pmatrix_n[0] + Pmatrix_n[1])/2
     row_number = inicial
+
     plot_transition_heatmap(Pmatrix_n, n, m, row_number)
 
 

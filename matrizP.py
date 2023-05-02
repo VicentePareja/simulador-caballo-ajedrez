@@ -169,7 +169,7 @@ def print_row_as_board(row, n, m):
     row_reshaped = row.reshape((n, m))
     for i in range(n):
         for j in range(m):
-            print("{:.2f} ".format(row_reshaped[i][j]), end="")
+            print("{:.5f} ".format(row_reshaped[i][j]), end="")
         print()
     print()
 
@@ -189,8 +189,8 @@ if __name__ == '__main__':
     # Ejemplo de uso:
     # Elige la fila de la matriz que deseas imprimir (el nodo de inicio)
     nodo_inicio = 0
-    num_steps = 1  # Elige el número de pasos
+    num_steps = 10  # Elige el número de pasos
     # Elevar la matriz P al numero de pasos.
-    P_power_n = matrix_power_n(queen_matrix, num_steps)
+    P_power_n = matrix_power_n(knight_matrix, num_steps)
     # printear el tablero de probabilidades completo
     print_row_as_board(P_power_n[nodo_inicio], n, m)

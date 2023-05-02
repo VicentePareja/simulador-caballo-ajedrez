@@ -390,6 +390,8 @@ def probabilidad_camino(cantidad_caminos, casilla_inicial, casilla_final, cantid
 
 
 if __name__ == '__main__':
-    p = probabilidad_camino(10000, (0, 0), (7, 7), 10, "caballo")
+    p = probabilidad_camino(1000000, (0, 0), (7, 7), 10, "caballo")
+    p2 = probabilidad_camino(1000000, (0, 0), (7, 7), 10, "caballo")
+    p3 = probabilidad_camino(1000000, (0, 0), (7, 7), 10, "caballo")
 
-    print(f"La probabilidad es : {p}")
+    print(f"La probabilidad es : {(p + p2 + p3)/3}")
