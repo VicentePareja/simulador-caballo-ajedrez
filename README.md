@@ -23,7 +23,8 @@ Puedes instalar las bibliotecas utilizando pip. Por ejemplo, para instalar numpy
 
 ```shell
 pip install numpy
-pip install matplotlib```
+pip install matplotlib
+```
 
 ## Contribución
 
