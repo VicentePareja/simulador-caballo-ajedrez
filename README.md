@@ -21,9 +21,9 @@ Este proyecto requiere Python y las siguientes bibliotecas de Python:
 
 Puedes instalar las bibliotecas utilizando pip. Por ejemplo, para instalar numpy y matplotlib, puedes usar los siguientes comandos en la terminal:
 
-"""shell
+```shell
 pip install numpy
-pip install matplotlib"""
+pip install matplotlib```
 
 ## Contribución
 
